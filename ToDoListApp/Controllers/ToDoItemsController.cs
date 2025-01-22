@@ -35,6 +35,23 @@ public class ToDoItemsController : ControllerBase
         return Ok(item);
     }
 
+    [HttpGet]
+    [Route("search")]
+    public async Task<ActionResult> GetAllByTitle([FromQuery] string title){
+
+        if (string.IsNullOrWhiteSpace(title))
+            return BadRequest("Title parameter is required.");
+            
+        var items = await _context.ToDoItems
+        .Where(x => EF.Functions.Like(x.Title, $"%{title}%"))
+        .ToListAsync();
+
+        if(!items.Any())
+            return NotFound("No tasks found matching the specified title.");
+
+        return Ok(items);
+    }
+
     [HttpPost]
     public async Task<ActionResult> CreateAsync([FromBody] ToDoItemCreateDto toDoItemCreateDto){
         var toDoItem = new ToDoItem
