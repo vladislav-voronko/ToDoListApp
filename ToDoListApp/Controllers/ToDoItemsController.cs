@@ -37,20 +37,38 @@ public class ToDoItemsController : ControllerBase
 
     [HttpGet]
     [Route("search")]
-    public async Task<ActionResult> GetAllByTitle([FromQuery] string title){
+    public async Task<ActionResult> GetAllByTitlePaginated([FromQuery] string title, int page = 1, int pageSize = 10){
 
         if (string.IsNullOrWhiteSpace(title))
             return BadRequest("Title parameter is required.");
-            
+
+        var totalItems = await _context.ToDoItems
+            .Where(x => EF.Functions.Like(x.Title, $"%{title}%"))
+            .CountAsync();
+
+        if (totalItems == 0)
+            return NotFound("No tasks found matching the specified title.");
+
         var items = await _context.ToDoItems
-        .Where(x => EF.Functions.Like(x.Title, $"%{title}%"))
-        .ToListAsync();
+            .Where(x => EF.Functions.Like(x.Title, $"%{title}%"))
+            .OrderBy(b => b.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
         if(!items.Any())
             return NotFound("No tasks found matching the specified title.");
 
-        return Ok(items);
+        var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+        
+        return Ok(new{
+            items,
+            totalItems,
+            totalPages,
+            currentPage = page
+        });
     }
+
 
     [HttpPost]
     public async Task<ActionResult> CreateAsync([FromBody] ToDoItemCreateDto toDoItemCreateDto){
