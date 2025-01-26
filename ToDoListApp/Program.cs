@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using ToDoListApp.Data;
 using ToDoListApp.Extensions;
 
@@ -6,7 +8,33 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => {
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo(){
+        Title = "Auth Demo",
+        Version = "v1"
+    });
+
+    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme(){
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Please enter a token",
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+
+    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement(){
+        {
+            new OpenApiSecurityScheme{
+                Reference = new OpenApiReference{
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            }, []
+        }
+    });
+});
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
@@ -16,6 +44,8 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>()
 
 var app = builder.Build();
 
+app.MapIdentityApi<IdentityUser>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -24,7 +54,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.MapIdentityApi<IdentityUser>();
 app.MapControllers();
 
 app.Run();

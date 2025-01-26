@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ToDoListApp.Data;
 using ToDoListApp.Models;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class ToDoItemsController : ControllerBase
@@ -14,7 +16,7 @@ public class ToDoItemsController : ControllerBase
     {
         _context = context;
     }
-
+    
     [HttpGet]
     public async Task<ActionResult> GetAll(){
         try{
