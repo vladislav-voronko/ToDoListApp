@@ -8,11 +8,11 @@ using ToDoListApp.Models;
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class ToDoItemsController : ControllerBase
+public class CategoriesController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
 
-    public ToDoItemsController(ApplicationDbContext context)
+    public CategoriesController(ApplicationDbContext context)
     {
         _context = context;
     }
@@ -20,8 +20,8 @@ public class ToDoItemsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult> GetAll(){
         try{
-            var items = await _context.ToDoItems.Include(x => x.Category).ToListAsync();
-            return Ok(items);
+            var categories = await _context.Categories.ToListAsync();
+            return Ok(categories);
         }
         catch (Exception e){
             return BadRequest(e.Message);
@@ -29,15 +29,12 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetById(Guid id){
+    public async Task<ActionResult> GetById(int id){
         
-        var item = await _context.ToDoItems
-            .Include(c => c.Category)
-            .Where(x => x.Id == id)
-            .FirstOrDefaultAsync();
-        if(item == null)
+        var category = await _context.Categories.FindAsync(id);
+        if(category == null)
             return NotFound();
-        return Ok(item);
+        return Ok(category);
     }
 
     [HttpGet]
@@ -55,7 +52,6 @@ public class ToDoItemsController : ControllerBase
             return NotFound("No tasks found matching the specified title.");
 
         var items = await _context.ToDoItems
-            .Include(c => c.Category)
             .Where(x => EF.Functions.Like(x.Title, $"%{title}%"))
             .OrderBy(b => b.Id)
             .Skip((page - 1) * pageSize)
@@ -77,30 +73,30 @@ public class ToDoItemsController : ControllerBase
 
 
     [HttpPost]
-    public async Task<ActionResult> CreateAsync([FromBody] ToDoItemCreateDto toDoItemCreateDto){
-        var toDoItem = new ToDoItem
+    public async Task<ActionResult> CreateAsync([FromBody] CategoryCreateDto categoryCreateDto){
+        var category = new Category
         {
-            Title = toDoItemCreateDto.Title,
-            IsCompleted = toDoItemCreateDto.IsCompleted
+            Name = categoryCreateDto.Name,
+            Description = categoryCreateDto.Description
         };
-        _context.Add(toDoItem);
+        _context.Add(category);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetById), new {id = toDoItem.Id}, toDoItem);
+        return CreatedAtAction(nameof(GetById), new {id = category.Id}, category);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateAsync(int id, [FromBody] ToDoItemUpdateDto toDoItemUpdateDto){
-        var toDoItem = await _context.ToDoItems.FindAsync(id);
+    public async Task<ActionResult> UpdateAsync(int id, [FromBody] CategoryUpdateDto categoryUpdateDto){
+        var category = await _context.Categories.FindAsync(id);
 
-        if (toDoItem == null)
+        if (category == null)
         {
             return NotFound();
         }
 
-        toDoItem.Title = toDoItemUpdateDto.Title;
-        toDoItem.IsCompleted = toDoItemUpdateDto.IsCompleted;
+        category.Name = categoryUpdateDto.Name;
+        category.Description = categoryUpdateDto.Description;
 
-        _context.ToDoItems.Update(toDoItem);
+        _context.Categories.Update(category);
         await _context.SaveChangesAsync();
 
         return NoContent();
@@ -108,10 +104,10 @@ public class ToDoItemsController : ControllerBase
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteAsync(int id){
-        var item = await _context.ToDoItems.FindAsync(id);
-        if(item == null)
+        var category = await _context.Categories.FindAsync(id);
+        if(category == null)
             return NotFound();
-        _context.ToDoItems.Remove(item);
+        _context.Categories.Remove(category);
         await _context.SaveChangesAsync();
         return NoContent();
     }
