@@ -12,7 +12,7 @@ using ToDoListApp.Data;
 namespace ToDoListApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250125145746_AddIdentityTables")]
+    [Migration("20250128161604_AddIdentityTables")]
     partial class AddIdentityTables
     {
         /// <inheritdoc />
@@ -225,11 +225,9 @@ namespace ToDoListApp.Migrations
 
             modelBuilder.Entity("ToDoListApp.Models.ToDoItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
