@@ -78,10 +78,36 @@ public class ToDoItemsController : ControllerBase
 
     [HttpPost]
     public async Task<ActionResult> CreateAsync([FromBody] ToDoItemCreateDto toDoItemCreateDto){
+        Category? category = null;
+
+        if (toDoItemCreateDto.CategoryId != Guid.Empty){
+            category = await _context.Categories.FindAsync(toDoItemCreateDto.CategoryId);
+
+            if(category == null){
+                return BadRequest($"Category with ID {toDoItemCreateDto.CategoryId} doesn't exist.");
+            }
+        }
+        else if (!string.IsNullOrWhiteSpace(toDoItemCreateDto.CategoryName))
+        {
+            var res = await _context.Categories
+                .Where(x => EF.Functions.Like(x.Name, $"%{toDoItemCreateDto.CategoryName}%"))
+                .ToListAsync();
+            
+            if(res[0] != null)
+                category = res[0];
+            else{
+                category = new Category{
+                    Name = toDoItemCreateDto.CategoryName
+                };
+                _context.Categories.Add(category);
+            }
+        }
+
         var toDoItem = new ToDoItem
         {
             Title = toDoItemCreateDto.Title,
-            IsCompleted = toDoItemCreateDto.IsCompleted
+            IsCompleted = toDoItemCreateDto.IsCompleted,
+            Category = category
         };
         _context.Add(toDoItem);
         await _context.SaveChangesAsync();
@@ -89,7 +115,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateAsync(int id, [FromBody] ToDoItemUpdateDto toDoItemUpdateDto){
+    public async Task<ActionResult> UpdateAsync(Guid id, [FromBody] ToDoItemUpdateDto toDoItemUpdateDto){
         var toDoItem = await _context.ToDoItems.FindAsync(id);
 
         if (toDoItem == null)
@@ -99,6 +125,7 @@ public class ToDoItemsController : ControllerBase
 
         toDoItem.Title = toDoItemUpdateDto.Title;
         toDoItem.IsCompleted = toDoItemUpdateDto.IsCompleted;
+        toDoItem.CategoryId = toDoItemUpdateDto.CategoryId;
 
         _context.ToDoItems.Update(toDoItem);
         await _context.SaveChangesAsync();
@@ -107,7 +134,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteAsync(int id){
+    public async Task<ActionResult> DeleteAsync(Guid id){
         var item = await _context.ToDoItems.FindAsync(id);
         if(item == null)
             return NotFound();

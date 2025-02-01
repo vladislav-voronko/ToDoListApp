@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ToDoListApp.Data;
 using ToDoListApp.Models;
 
-[Authorize]
+[AllowAnonymous]
 [Route("api/[controller]")]
 [ApiController]
 public class CategoriesController : ControllerBase
@@ -20,7 +20,7 @@ public class CategoriesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult> GetAll(){
         try{
-            var categories = await _context.Categories.ToListAsync();
+            var categories = await _context.Categories.Include(item => item.ToDoItems).ToListAsync();
             return Ok(categories);
         }
         catch (Exception e){
@@ -29,9 +29,9 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetById(int id){
+    public async Task<ActionResult> GetById(Guid id){
         
-        var category = await _context.Categories.FindAsync(id);
+        var category = await _context.Categories.Include(item => item.ToDoItems).Where(item => item.Id == id).FirstOrDefaultAsync();
         if(category == null)
             return NotFound();
         return Ok(category);
@@ -39,27 +39,28 @@ public class CategoriesController : ControllerBase
 
     [HttpGet]
     [Route("search")]
-    public async Task<ActionResult> GetAllByTitlePaginated([FromQuery] string title, int page = 1, int pageSize = 10){
+    public async Task<ActionResult> GetAllByTitlePaginated([FromQuery] string name, int page = 1, int pageSize = 10){
 
-        if (string.IsNullOrWhiteSpace(title))
+        if (string.IsNullOrWhiteSpace(name))
             return BadRequest("Title parameter is required.");
 
-        var totalItems = await _context.ToDoItems
-            .Where(x => EF.Functions.Like(x.Title, $"%{title}%"))
+        var totalItems = await _context.Categories
+            .Where(x => EF.Functions.Like(x.Name, $"%{name}%"))
             .CountAsync();
 
         if (totalItems == 0)
-            return NotFound("No tasks found matching the specified title.");
+            return NotFound("No tasks found matching the specified name.");
 
-        var items = await _context.ToDoItems
-            .Where(x => EF.Functions.Like(x.Title, $"%{title}%"))
+        var items = await _context.Categories
+            .Include(item => item.ToDoItems)
+            .Where(x => EF.Functions.Like(x.Name, $"%{name}%"))
             .OrderBy(b => b.Id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
         if(!items.Any())
-            return NotFound("No tasks found matching the specified title.");
+            return NotFound("No tasks found matching the specified name.");
 
         var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
         
@@ -85,7 +86,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateAsync(int id, [FromBody] CategoryUpdateDto categoryUpdateDto){
+    public async Task<ActionResult> UpdateAsync(Guid id, [FromBody] CategoryUpdateDto categoryUpdateDto){
         var category = await _context.Categories.FindAsync(id);
 
         if (category == null)
@@ -103,10 +104,17 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteAsync(int id){
+    public async Task<ActionResult> DeleteAsync(Guid id){
         var category = await _context.Categories.FindAsync(id);
         if(category == null)
             return NotFound();
+        
+        var itemsToUpdate = _context.ToDoItems.Where(item => item.CategoryId == category.Id).ToList();
+        foreach (var item in itemsToUpdate)
+        {
+            item.CategoryId = Guid.Empty;
+        }
+
         _context.Categories.Remove(category);
         await _context.SaveChangesAsync();
         return NoContent();

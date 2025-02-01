@@ -22,6 +22,6 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser> {
             .WithOne(e => e.Category)
             .HasForeignKey(e => e.CategoryId)
             .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
