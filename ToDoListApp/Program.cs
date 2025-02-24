@@ -6,6 +6,21 @@ using ToDoListApp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddLogging();
+
+builder.Host.ConfigureAppConfiguration((context, config) =>
+{
+    var env = context.HostingEnvironment;
+    config.SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+        .AddEnvironmentVariables();
+    
+    var configuration = config.Build();
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+    Console.WriteLine($"Connection String: {connectionString}");
+});
+
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => {
@@ -48,6 +63,11 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>()
 var app = builder.Build();
 
 app.MapIdentityApi<IdentityUser>();
+app.UseCors(builder =>
+    builder
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin());
 
 if (app.Environment.IsDevelopment())
 {

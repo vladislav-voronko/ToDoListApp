@@ -114,7 +114,7 @@ public class ToDoItemsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new {id = toDoItem.Id}, toDoItem);
     }
 
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
     public async Task<ActionResult> UpdateAsync(Guid id, [FromBody] ToDoItemUpdateDto toDoItemUpdateDto){
         var toDoItem = await _context.ToDoItems.FindAsync(id);
 
@@ -123,14 +123,25 @@ public class ToDoItemsController : ControllerBase
             return NotFound();
         }
 
-        toDoItem.Title = toDoItemUpdateDto.Title;
-        toDoItem.IsCompleted = toDoItemUpdateDto.IsCompleted;
-        toDoItem.CategoryId = toDoItemUpdateDto.CategoryId;
+        if (toDoItemUpdateDto.Title != null)
+        {
+            toDoItem.Title = toDoItemUpdateDto.Title;
+        }
+
+        if (toDoItemUpdateDto.IsCompleted.HasValue)
+        {
+            toDoItem.IsCompleted = toDoItemUpdateDto.IsCompleted.Value;
+        }
+
+        if (toDoItemUpdateDto.CategoryId.HasValue)
+        {
+            toDoItem.CategoryId = toDoItemUpdateDto.CategoryId.Value;
+        }
 
         _context.ToDoItems.Update(toDoItem);
         await _context.SaveChangesAsync();
 
-        return NoContent();
+        return NoContent(); 
     }
 
     [HttpDelete("{id}")]

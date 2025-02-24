@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ToDoListApp.Data;
 using ToDoListApp.Models;
 
-[AllowAnonymous]
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class CategoriesController : ControllerBase
