@@ -85,7 +85,7 @@ public class CategoriesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new {id = category.Id}, category);
     }
 
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
     public async Task<ActionResult> UpdateAsync(Guid id, [FromBody] CategoryUpdateDto categoryUpdateDto){
         var category = await _context.Categories.FindAsync(id);
 
