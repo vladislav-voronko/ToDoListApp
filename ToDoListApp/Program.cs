@@ -1,6 +1,5 @@
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using ToDoListApp.Data;
 using ToDoListApp.Extensions;
 
@@ -8,47 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLogging();
 
-builder.Host.ConfigureAppConfiguration((context, config) =>
-{
-    var env = context.HostingEnvironment;
-    config.SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-        .AddEnvironmentVariables();
-    
-    var configuration = config.Build();
-    var connectionString = configuration.GetConnectionString("DefaultConnection");
-    Console.WriteLine($"Connection String: {connectionString}");
-});
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => {
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo(){
-        Title = "Auth Demo",
-        Version = "v1"
-    });
 
-    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme(){
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Please enter a token",
-        Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "bearer"
-    });
-
-    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement(){
-        {
-            new OpenApiSecurityScheme{
-                Reference = new OpenApiReference{
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            }, []
-        }
-    });
-});
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -59,6 +22,10 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddOptions<BearerTokenOptions>(IdentityConstants.BearerScheme).Configure(options =>
+{
+    options.BearerTokenExpiration = TimeSpan.FromSeconds(30);
+});
 
 var app = builder.Build();
 
@@ -76,10 +43,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
 
 ///opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Collapsing122024
