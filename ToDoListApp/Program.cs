@@ -29,7 +29,7 @@ builder.Services.AddOptions<BearerTokenOptions>(IdentityConstants.BearerScheme).
 
 var app = builder.Build();
 
-app.MapIdentityApi<IdentityUser>();
+app.MapGroup("/api").MapIdentityApi<IdentityUser>();
 app.UseCors(builder =>
     builder
         .AllowAnyHeader()
