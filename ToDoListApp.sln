@@ -1,10 +1,12 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoListApp", "ToDoListApp", "{787D3BC9-2599-75AF-0930-E5BEA905A0F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListApp", "ToDoListApp\ToDoListApp.csproj", "{5B769978-E7AB-980A-055B-73983176E548}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetManagementService", "AssetManagementService\AssetManagementService.csproj", "{64DBD4AD-9640-4213-8439-7402AAA87F36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,6 +18,10 @@ Global
 		{5B769978-E7AB-980A-055B-73983176E548}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B769978-E7AB-980A-055B-73983176E548}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B769978-E7AB-980A-055B-73983176E548}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64DBD4AD-9640-4213-8439-7402AAA87F36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64DBD4AD-9640-4213-8439-7402AAA87F36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64DBD4AD-9640-4213-8439-7402AAA87F36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64DBD4AD-9640-4213-8439-7402AAA87F36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
