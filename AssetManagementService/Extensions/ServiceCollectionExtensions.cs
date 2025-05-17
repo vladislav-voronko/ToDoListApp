@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ToDoListApp.Data;
+using AssetManagementService.Data;
 
-namespace ToDoListApp.Extensions
+namespace AssetManagementService.Extensions
 {
     public static class ServiceCollectionExtensions {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration){
