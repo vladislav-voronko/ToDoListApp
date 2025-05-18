@@ -1,5 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
 
-app.Run();
+var app = builder.Build();
 
-//make mvp for the asset management service
+app.Run();
