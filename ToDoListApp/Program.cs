@@ -19,9 +19,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-
 builder.Services.AddOptions<BearerTokenOptions>(IdentityConstants.BearerScheme).Configure(options =>
 {
     options.BearerTokenExpiration = TimeSpan.FromSeconds(30);
@@ -29,7 +26,6 @@ builder.Services.AddOptions<BearerTokenOptions>(IdentityConstants.BearerScheme).
 
 var app = builder.Build();
 
-app.MapGroup("/api").MapIdentityApi<IdentityUser>();
 app.UseCors(builder =>
     builder
         .AllowAnyHeader()
