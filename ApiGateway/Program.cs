@@ -14,7 +14,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = "http://localhost:5254"; 
+        options.Authority = "http://localhost:5000"; // AuthService URL
         options.RequireHttpsMetadata = false;
         options.Audience = "api";
     });
