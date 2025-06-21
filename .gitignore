@@ -330,5 +330,5 @@ ASALocalRun/
 .mfractor/
 
 # AuthService signing keys
-ToDoListApp/AuthService/keys/
-ToDoListApp/AuthService/*.jwk
+AuthService/keys/
+AuthService/*.jwk

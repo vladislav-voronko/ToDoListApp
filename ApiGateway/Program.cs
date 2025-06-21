@@ -14,9 +14,30 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = "http://localhost:5000"; // AuthService URL
-        options.RequireHttpsMetadata = false;
-        options.Audience = "api";
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "http://localhost:5000",
+            ValidAudience = "api",
+            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes("your-very-strong-secret-key-should-be-long"))
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine($"❌ JWT auth failed: {context.Exception}");
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine("✅ JWT token validated successfully.");
+                return Task.CompletedTask;
+            }
+        };
     });
 builder.Services.AddOcelot(builder.Configuration);
 
@@ -48,10 +69,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapControllers();
-
 await app.UseOcelot();
 
 app.Run();
-
-//authentication for the api gateway

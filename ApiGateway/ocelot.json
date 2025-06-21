@@ -18,7 +18,7 @@
         "POST"
       ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKeys": "Bearer"
+        "AuthenticationProviderKeys": [ "Bearer" ]
       }
     },
     {
@@ -37,7 +37,7 @@
         "DELETE"
       ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKeys": "Bearer"
+        "AuthenticationProviderKeys": [ "Bearer" ]
       }
     },
     {
@@ -54,7 +54,7 @@
         "GET"
       ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKeys": "Bearer"
+        "AuthenticationProviderKeys": [ "Bearer" ]
       }
     },
     {
@@ -72,7 +72,7 @@
         "POST"
       ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKeys": "Bearer"
+        "AuthenticationProviderKeys": [ "Bearer" ]
       }
     },
     {
@@ -91,7 +91,7 @@
         "DELETE"
       ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKeys": "Bearer"
+        "AuthenticationProviderKeys": [ "Bearer" ]
       }
     },
     {
@@ -108,11 +108,11 @@
         "GET"
       ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKeys": "Bearer"
+        "AuthenticationProviderKeys": [ "Bearer" ]
       }
     },
     {
-      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
