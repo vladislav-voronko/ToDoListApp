@@ -328,3 +328,7 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# AuthService signing keys
+ToDoListApp/AuthService/keys/
+ToDoListApp/AuthService/*.jwk
