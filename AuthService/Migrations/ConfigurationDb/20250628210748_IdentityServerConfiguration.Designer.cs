@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthService.Migrations.ConfigurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
-    [Migration("20250621113955_IdentityServerConfiguration")]
+    [Migration("20250628210748_IdentityServerConfiguration")]
     partial class IdentityServerConfiguration
     {
         /// <inheritdoc />
@@ -20,6 +20,7 @@ namespace AuthService.Migrations.ConfigurationDb
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("identity.configuration")
                 .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -76,7 +77,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("ApiResources", (string)null);
+                    b.ToTable("ApiResources", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceClaim", b =>
@@ -100,7 +101,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ApiResourceId", "Type")
                         .IsUnique();
 
-                    b.ToTable("ApiResourceClaims", (string)null);
+                    b.ToTable("ApiResourceClaims", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceProperty", b =>
@@ -129,7 +130,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ApiResourceId", "Key")
                         .IsUnique();
 
-                    b.ToTable("ApiResourceProperties", (string)null);
+                    b.ToTable("ApiResourceProperties", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceScope", b =>
@@ -153,7 +154,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ApiResourceId", "Scope")
                         .IsUnique();
 
-                    b.ToTable("ApiResourceScopes", (string)null);
+                    b.ToTable("ApiResourceScopes", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceSecret", b =>
@@ -191,7 +192,7 @@ namespace AuthService.Migrations.ConfigurationDb
 
                     b.HasIndex("ApiResourceId");
 
-                    b.ToTable("ApiResourceSecrets", (string)null);
+                    b.ToTable("ApiResourceSecrets", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiScope", b =>
@@ -244,7 +245,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("ApiScopes", (string)null);
+                    b.ToTable("ApiScopes", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiScopeClaim", b =>
@@ -268,7 +269,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ScopeId", "Type")
                         .IsUnique();
 
-                    b.ToTable("ApiScopeClaims", (string)null);
+                    b.ToTable("ApiScopeClaims", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiScopeProperty", b =>
@@ -297,7 +298,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ScopeId", "Key")
                         .IsUnique();
 
-                    b.ToTable("ApiScopeProperties", (string)null);
+                    b.ToTable("ApiScopeProperties", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.Client", b =>
@@ -484,7 +485,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ClientId")
                         .IsUnique();
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientClaim", b =>
@@ -513,7 +514,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ClientId", "Type", "Value")
                         .IsUnique();
 
-                    b.ToTable("ClientClaims", (string)null);
+                    b.ToTable("ClientClaims", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientCorsOrigin", b =>
@@ -537,7 +538,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ClientId", "Origin")
                         .IsUnique();
 
-                    b.ToTable("ClientCorsOrigins", (string)null);
+                    b.ToTable("ClientCorsOrigins", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientGrantType", b =>
@@ -561,7 +562,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ClientId", "GrantType")
                         .IsUnique();
 
-                    b.ToTable("ClientGrantTypes", (string)null);
+                    b.ToTable("ClientGrantTypes", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientIdPRestriction", b =>
@@ -585,7 +586,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ClientId", "Provider")
                         .IsUnique();
 
-                    b.ToTable("ClientIdPRestrictions", (string)null);
+                    b.ToTable("ClientIdPRestrictions", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientPostLogoutRedirectUri", b =>
@@ -609,7 +610,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ClientId", "PostLogoutRedirectUri")
                         .IsUnique();
 
-                    b.ToTable("ClientPostLogoutRedirectUris", (string)null);
+                    b.ToTable("ClientPostLogoutRedirectUris", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientProperty", b =>
@@ -638,7 +639,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ClientId", "Key")
                         .IsUnique();
 
-                    b.ToTable("ClientProperties", (string)null);
+                    b.ToTable("ClientProperties", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientRedirectUri", b =>
@@ -662,7 +663,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ClientId", "RedirectUri")
                         .IsUnique();
 
-                    b.ToTable("ClientRedirectUris", (string)null);
+                    b.ToTable("ClientRedirectUris", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientScope", b =>
@@ -686,7 +687,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("ClientId", "Scope")
                         .IsUnique();
 
-                    b.ToTable("ClientScopes", (string)null);
+                    b.ToTable("ClientScopes", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ClientSecret", b =>
@@ -724,7 +725,7 @@ namespace AuthService.Migrations.ConfigurationDb
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ClientSecrets", (string)null);
+                    b.ToTable("ClientSecrets", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityProvider", b =>
@@ -772,7 +773,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("Scheme")
                         .IsUnique();
 
-                    b.ToTable("IdentityProviders", (string)null);
+                    b.ToTable("IdentityProviders", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityResource", b =>
@@ -822,7 +823,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("IdentityResources", (string)null);
+                    b.ToTable("IdentityResources", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityResourceClaim", b =>
@@ -846,7 +847,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("IdentityResourceId", "Type")
                         .IsUnique();
 
-                    b.ToTable("IdentityResourceClaims", (string)null);
+                    b.ToTable("IdentityResourceClaims", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.IdentityResourceProperty", b =>
@@ -875,7 +876,7 @@ namespace AuthService.Migrations.ConfigurationDb
                     b.HasIndex("IdentityResourceId", "Key")
                         .IsUnique();
 
-                    b.ToTable("IdentityResourceProperties", (string)null);
+                    b.ToTable("IdentityResourceProperties", "identity.configuration");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ApiResourceClaim", b =>

@@ -1,10 +1,10 @@
 namespace AssetManagementService.Models;
-public class Replenishment
+
+public class PriceSnapshot
 {
     public Guid Id { get; set; }
     public Guid AssetId { get; set; }
-    public double Amount { get; set; }
+    public decimal Price { get; set; }
     public DateTime Date { get; set; }
-    public Asset Asset { get; set; }
-    public string Note { get; set; }
+    public Asset? Asset { get; set; }
 }

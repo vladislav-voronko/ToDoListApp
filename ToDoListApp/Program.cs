@@ -39,11 +39,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 
-// builder.Services.AddOptions<BearerTokenOptions>(IdentityConstants.BearerScheme).Configure(options =>
-// {
-//     options.BearerTokenExpiration = TimeSpan.FromSeconds(30);
-// });
-
 var app = builder.Build();
 
 app.UseCors(builder =>

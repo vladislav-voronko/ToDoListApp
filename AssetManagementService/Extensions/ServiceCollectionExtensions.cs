@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using AssetManagementService.Data;
+using AssetManagementService.Interfaces;
 
 namespace AssetManagementService.Extensions
 {
@@ -8,6 +9,8 @@ namespace AssetManagementService.Extensions
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(connectionString));
+
+            services.AddScoped<IAssetService, AssetService>();
             
             return services;
         }

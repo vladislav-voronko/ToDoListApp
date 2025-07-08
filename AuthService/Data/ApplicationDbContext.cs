@@ -10,6 +10,8 @@ namespace AuthService.Data
             : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("identity");
+            
             base.OnModelCreating(modelBuilder);
         }
     }

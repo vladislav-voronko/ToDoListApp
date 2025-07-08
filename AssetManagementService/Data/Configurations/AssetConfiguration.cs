@@ -9,5 +9,25 @@ public class AssetConfiguration : IEntityTypeConfiguration<Asset>
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Name).IsRequired().HasMaxLength(200);
+        builder.Property(x => x.Symbol).IsRequired().HasMaxLength(50);
+
+        builder.HasMany(x => x.Trades)
+            .WithOne(x => x.Asset)
+            .HasForeignKey(x => x.AssetId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Replenishments)
+            .WithOne(x => x.Asset)
+            .HasForeignKey(x => x.AssetId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.PriceSnapshots)
+            .WithOne(x => x.Asset)
+            .HasForeignKey(x => x.AssetId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.PortfolioSnapshotAssets)
+            .WithOne(x => x.Asset)
+            .HasForeignKey(x => x.AssetId);
     }
 }

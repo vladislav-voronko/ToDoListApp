@@ -22,12 +22,14 @@ builder.Services.AddIdentityServer()
         options.ConfigureDbContext = b =>
             b.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
                 sql => sql.MigrationsAssembly(typeof(Program).Assembly.FullName));
+        options.DefaultSchema = "identity.configuration";
     })
     .AddOperationalStore(options =>
     {
         options.ConfigureDbContext = b =>
             b.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
                 sql => sql.MigrationsAssembly(typeof(Program).Assembly.FullName));
+        options.DefaultSchema = "identity.operational";
     })
     .AddDeveloperSigningCredential(); // Временно для разработки
 

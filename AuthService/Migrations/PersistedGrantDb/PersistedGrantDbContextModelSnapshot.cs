@@ -17,6 +17,7 @@ namespace AuthService.Migrations.PersistedGrantDb
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("identity.operational")
                 .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -68,7 +69,7 @@ namespace AuthService.Migrations.PersistedGrantDb
 
                     b.HasIndex("Expiration");
 
-                    b.ToTable("DeviceCodes", (string)null);
+                    b.ToTable("DeviceCodes", "identity.operational");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.Key", b =>
@@ -104,7 +105,7 @@ namespace AuthService.Migrations.PersistedGrantDb
 
                     b.HasIndex("Use");
 
-                    b.ToTable("Keys", (string)null);
+                    b.ToTable("Keys", "identity.operational");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.PersistedGrant", b =>
@@ -169,7 +170,7 @@ namespace AuthService.Migrations.PersistedGrantDb
 
                     b.HasIndex("SubjectId", "SessionId", "Type");
 
-                    b.ToTable("PersistedGrants", (string)null);
+                    b.ToTable("PersistedGrants", "identity.operational");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.PushedAuthorizationRequest", b =>
@@ -199,7 +200,7 @@ namespace AuthService.Migrations.PersistedGrantDb
                     b.HasIndex("ReferenceValueHash")
                         .IsUnique();
 
-                    b.ToTable("PushedAuthorizationRequests", (string)null);
+                    b.ToTable("PushedAuthorizationRequests", "identity.operational");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.ServerSideSession", b =>
@@ -259,7 +260,7 @@ namespace AuthService.Migrations.PersistedGrantDb
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("ServerSideSessions", (string)null);
+                    b.ToTable("ServerSideSessions", "identity.operational");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,8 +11,12 @@ namespace AuthService.Migrations.PersistedGrantDb
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "identity.operational");
+
             migrationBuilder.CreateTable(
                 name: "DeviceCodes",
+                schema: "identity.operational",
                 columns: table => new
                 {
                     UserCode = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
@@ -32,6 +36,7 @@ namespace AuthService.Migrations.PersistedGrantDb
 
             migrationBuilder.CreateTable(
                 name: "Keys",
+                schema: "identity.operational",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -50,6 +55,7 @@ namespace AuthService.Migrations.PersistedGrantDb
 
             migrationBuilder.CreateTable(
                 name: "PersistedGrants",
+                schema: "identity.operational",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -72,6 +78,7 @@ namespace AuthService.Migrations.PersistedGrantDb
 
             migrationBuilder.CreateTable(
                 name: "PushedAuthorizationRequests",
+                schema: "identity.operational",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -87,6 +94,7 @@ namespace AuthService.Migrations.PersistedGrantDb
 
             migrationBuilder.CreateTable(
                 name: "ServerSideSessions",
+                schema: "identity.operational",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -108,32 +116,38 @@ namespace AuthService.Migrations.PersistedGrantDb
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeviceCodes_DeviceCode",
+                schema: "identity.operational",
                 table: "DeviceCodes",
                 column: "DeviceCode",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeviceCodes_Expiration",
+                schema: "identity.operational",
                 table: "DeviceCodes",
                 column: "Expiration");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Keys_Use",
+                schema: "identity.operational",
                 table: "Keys",
                 column: "Use");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_ConsumedTime",
+                schema: "identity.operational",
                 table: "PersistedGrants",
                 column: "ConsumedTime");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_Expiration",
+                schema: "identity.operational",
                 table: "PersistedGrants",
                 column: "Expiration");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_Key",
+                schema: "identity.operational",
                 table: "PersistedGrants",
                 column: "Key",
                 unique: true,
@@ -141,48 +155,57 @@ namespace AuthService.Migrations.PersistedGrantDb
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_SubjectId_ClientId_Type",
+                schema: "identity.operational",
                 table: "PersistedGrants",
                 columns: new[] { "SubjectId", "ClientId", "Type" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_SubjectId_SessionId_Type",
+                schema: "identity.operational",
                 table: "PersistedGrants",
                 columns: new[] { "SubjectId", "SessionId", "Type" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_PushedAuthorizationRequests_ExpiresAtUtc",
+                schema: "identity.operational",
                 table: "PushedAuthorizationRequests",
                 column: "ExpiresAtUtc");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PushedAuthorizationRequests_ReferenceValueHash",
+                schema: "identity.operational",
                 table: "PushedAuthorizationRequests",
                 column: "ReferenceValueHash",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServerSideSessions_DisplayName",
+                schema: "identity.operational",
                 table: "ServerSideSessions",
                 column: "DisplayName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServerSideSessions_Expires",
+                schema: "identity.operational",
                 table: "ServerSideSessions",
                 column: "Expires");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServerSideSessions_Key",
+                schema: "identity.operational",
                 table: "ServerSideSessions",
                 column: "Key",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServerSideSessions_SessionId",
+                schema: "identity.operational",
                 table: "ServerSideSessions",
                 column: "SessionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServerSideSessions_SubjectId",
+                schema: "identity.operational",
                 table: "ServerSideSessions",
                 column: "SubjectId");
         }
@@ -191,19 +214,24 @@ namespace AuthService.Migrations.PersistedGrantDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DeviceCodes");
+                name: "DeviceCodes",
+                schema: "identity.operational");
 
             migrationBuilder.DropTable(
-                name: "Keys");
+                name: "Keys",
+                schema: "identity.operational");
 
             migrationBuilder.DropTable(
-                name: "PersistedGrants");
+                name: "PersistedGrants",
+                schema: "identity.operational");
 
             migrationBuilder.DropTable(
-                name: "PushedAuthorizationRequests");
+                name: "PushedAuthorizationRequests",
+                schema: "identity.operational");
 
             migrationBuilder.DropTable(
-                name: "ServerSideSessions");
+                name: "ServerSideSessions",
+                schema: "identity.operational");
         }
     }
 }
